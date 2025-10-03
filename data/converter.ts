@@ -181,7 +181,6 @@ function convert(data: InputData, outputId = 'converted-data'): OutputData {
     data: [
       {
         report,
-        flows,
         transactions: allTransactions,
       },
     ],

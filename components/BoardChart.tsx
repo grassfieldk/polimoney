@@ -6,10 +6,14 @@ import {
   type SankeyLayerId,
   type SankeyNodeDatum,
 } from '@nivo/sankey';
-import type { Flow } from '@/models/type';
+import { useMemo } from 'react';
+import type { Category } from '@/data/common';
+import type { Transaction } from '@/models/type';
+import { generateFlowsFromTransactions } from '@/utils/flowGenerator';
 
 type Props = {
-  flows: Flow[];
+  transactions: Transaction[];
+  categories?: { income: Category[]; expense: Category[] };
 };
 type Data = {
   nodes: DataNode[];
@@ -26,18 +30,42 @@ type DataLink = {
   value: number;
 };
 
-export function BoardChart({ flows }: Props) {
+export function BoardChart({ transactions, categories }: Props) {
+  // Flowを生成
+  const computedFlows = useMemo(() => {
+    if (!categories) {
+      return [];
+    }
+    const flows = generateFlowsFromTransactions(transactions, categories);
+    return flows;
+  }, [transactions, categories]);
+
+  // flowsがない場合は空のデータを返す
+  if (computedFlows.length === 0) {
+    return (
+      <Box w={'full'} h={'600px'}>
+        Flow data not available
+      </Box>
+    );
+  }
+
   const data: Data = {
-    nodes: flows.map((item) => ({
+    nodes: computedFlows.map((item) => ({
       id: item.name,
       direction: item.direction,
       value: item.value,
     })),
-    links: flows
+    links: computedFlows
       .map((item) => {
+        // 総収入ノードはリンクを作らない
         if (item.name === '総収入') {
           return null;
         }
+        // parentがnullやundefinedの場合はリンクを作らない
+        if (!item.parent) {
+          return null;
+        }
+
         if (item.direction === 'income') {
           return {
             source: item.name,
@@ -52,6 +80,7 @@ export function BoardChart({ flows }: Props) {
             value: item.value,
           };
         }
+        return null;
       })
       .filter((item): item is DataLink => item !== null),
   };

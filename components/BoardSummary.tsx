@@ -15,7 +15,8 @@ import { LandmarkIcon } from 'lucide-react';
 import { useState } from 'react';
 import { BoardChart } from '@/components/BoardChart';
 import { BoardContainer } from '@/components/BoardContainer';
-import type { Flow, Profile, Report } from '@/models/type';
+import type { Category } from '@/data/common';
+import type { Profile, Report, Transaction } from '@/models/type';
 import { BoardChartFixed } from './BoardChartFixed';
 
 type Props = {
@@ -23,7 +24,8 @@ type Props = {
   profile: Profile;
   report: Report;
   otherReports: Report[];
-  flows: Flow[];
+  transactions: Transaction[];
+  categories?: { income: Category[]; expense: Category[] };
   useFixedBoardChart?: boolean;
 };
 
@@ -32,7 +34,8 @@ export function BoardSummary({
   profile,
   report,
   otherReports,
-  flows,
+  transactions,
+  categories,
   useFixedBoardChart = false,
 }: Props) {
   const [copied, setCopied] = useState(false);
@@ -215,9 +218,9 @@ export function BoardSummary({
       {/*</Box>*/}
       {/* チャート */}
       {useFixedBoardChart ? (
-        <BoardChartFixed flows={flows} />
+        <BoardChartFixed transactions={transactions} categories={categories} />
       ) : (
-        <BoardChart flows={flows} />
+        <BoardChart transactions={transactions} categories={categories} />
       )}
       <Box
         mb={3}
