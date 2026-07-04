@@ -1,9 +1,7 @@
 import '@mantine/core/styles.css';
-import './global.css';
 import { ColorSchemeScript, Container, MantineProvider } from '@mantine/core';
 import type { Metadata } from 'next';
 import NextTopLoader from 'nextjs-toploader';
-import { Provider } from '@/components/ui/provider';
 
 export const metadata: Metadata = {
   title: 'Polimoney (ポリマネー)',
@@ -74,11 +72,9 @@ export default function RootLayout({
       <body>
         <NextTopLoader showSpinner={false} />
         <MantineProvider forceColorScheme="light">
-          <Provider>
-            <Container size="lg" py="md">
-              {children}
-            </Container>
-          </Provider>
+          <Container size="lg" py="md">
+            {children}
+          </Container>
         </MantineProvider>
       </body>
     </html>
