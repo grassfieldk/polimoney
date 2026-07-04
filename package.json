@@ -14,6 +14,8 @@
     "@chakra-ui/react": "^3.20.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
+    "@mantine/core": "^8.3.18",
+    "@mantine/hooks": "^8.3.18",
     "@nivo/bar": "^0.99.0",
     "@nivo/pie": "^0.99.0",
     "@nivo/sankey": "^0.99.0",
@@ -31,6 +33,9 @@
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "postcss": "^8.5.16",
+    "postcss-preset-mantine": "^1.18.0",
+    "postcss-simple-vars": "^7.0.1",
     "puppeteer": "^24.7.2",
     "typescript": "^5"
   }

@@ -1,16 +1,13 @@
-html,
-body {
-  color: #4a4a4a;
-  background-image: url("/background.png");
-  background-size: cover;
-}
+/* 以下はすべて移行期間中のみ必要: Chakra 実装が残る Board 系コンポーネントが
+   参照しているクラス。Mantine 化が完了した時点でこのファイルごと削除する */
 
 .income {
-  color: #09acd1;
+  color: var(--mantine-color-cyan-7);
 }
 .expense {
-  color: #e44b70;
+  color: var(--mantine-color-pink-7);
 }
+
 dt,
 dd {
   font-size: 0.8rem;
