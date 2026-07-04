@@ -1,8 +1,9 @@
-import { Box } from '@chakra-ui/react';
-import type { Metadata } from 'next';
-import { Provider } from '@/components/ui/provider';
+import '@mantine/core/styles.css';
 import './global.css';
+import { ColorSchemeScript, Container, MantineProvider } from '@mantine/core';
+import type { Metadata } from 'next';
 import NextTopLoader from 'nextjs-toploader';
+import { Provider } from '@/components/ui/provider';
 
 export const metadata: Metadata = {
   title: 'Polimoney (ポリマネー)',
@@ -68,14 +69,17 @@ export default function RootLayout({
             __html: JSON.stringify(structuredDataOrganization),
           }}
         />
+        <ColorSchemeScript forceColorScheme="light" />
       </head>
       <body>
         <NextTopLoader showSpinner={false} />
-        <Provider>
-          <Box maxW="1200px" mx="auto" p={{ base: 5, lg: 10 }}>
-            {children}
-          </Box>
-        </Provider>
+        <MantineProvider forceColorScheme="light">
+          <Provider>
+            <Container size="lg" py="md">
+              {children}
+            </Container>
+          </Provider>
+        </MantineProvider>
       </body>
     </html>
   );
