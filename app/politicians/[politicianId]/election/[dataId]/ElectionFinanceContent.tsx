@@ -21,15 +21,8 @@ import { Notice } from '@/components/Notice';
 import type { EfData } from '@/models/election-finance';
 import type { ProfileList } from '@/models/type';
 import { getCategoryJpName } from '@/utils/election-finance';
+import { formatCurrency } from '@/utils/format';
 import { TransactionSection } from './TransactionSection';
-
-function formatCurrency(amount: number): string {
-  return amount.toLocaleString('ja-JP', {
-    style: 'currency',
-    currency: 'JPY',
-    minimumFractionDigits: 0,
-  });
-}
 
 export function ElectionFinanceContent({
   data,

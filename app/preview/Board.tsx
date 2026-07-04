@@ -24,7 +24,6 @@ export function Board({ data, politicianId }: BoardProps) {
         otherReports={data.data.map((d) => d.report)}
         transactions={reportData.transactions}
         categories={reportData.categories}
-        useFixedBoardChart={false}
       />
       <BoardTransactions
         direction={'income'}

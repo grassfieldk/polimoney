@@ -47,12 +47,7 @@ export default function SNSSharePanel({
   return (
     <Menu.Root closeOnSelect={false} positioning={{ placement: 'bottom' }}>
       <Menu.Trigger asChild>
-        <button
-          type="button"
-          className={`text-sm font-normal px-3 py-0.5 rounded-none transition z-10
-                  bg-black text-white border border-black hover:bg-gray-700 hover:text-white`}
-          aria-label="共有"
-        >
+        <button type="button" aria-label="共有">
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
             <title>共有</title>
             <rect
@@ -110,7 +105,7 @@ const ShareButtons = ({
 }) => (
   <Group grow gap="0">
     <Menu.Item value="copy" onClick={onCopy}>
-      <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 border transition">
+      <div>
         <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
           <title>{copied ? 'コピー済み' : 'URLをコピー'}</title>
           <circle
