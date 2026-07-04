@@ -21,6 +21,7 @@ import {
   useState,
 } from 'react';
 import { BoardContainer } from '@/components/BoardContainer';
+import { formatCurrency } from '@/utils/format';
 import { colorSchemeDefault } from '@/utils/nivoColorScheme';
 
 type Transaction = {
@@ -52,14 +53,6 @@ type ScrollShadowBoxProps = BoxProps & {
   children: ReactNode;
   watch?: number;
 };
-
-function formatCurrency(amount: number): string {
-  return amount.toLocaleString('ja-JP', {
-    style: 'currency',
-    currency: 'JPY',
-    minimumFractionDigits: 0,
-  });
-}
 
 function ScrollShadowBox({ children, watch, ...props }: ScrollShadowBoxProps) {
   const ref = useRef<HTMLDivElement | null>(null);

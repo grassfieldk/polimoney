@@ -198,42 +198,7 @@ export default async function Page(props: Props) {
           <Text color="gray.500">データがありません</Text>
         )}
 
-        {/*
-        TODO: 政治団体導線を再公開する際にこのセクションを復帰する
-        {politician.politicalDataId && politicalReports.length > 0 && (
-          <Box mb={8}>
-            <Text fontSize="lg" fontWeight="bold" mb={3}>
-              紐づく政治団体
-            </Text>
-            <Link href={`/organizations/${politicianId}`}>
-              <Card.Root
-                flexDirection="row"
-                boxShadow="xs"
-                border="1px solid"
-                borderColor="gray.200"
-                _hover={{ boxShadow: 'sm', borderColor: 'gray.300' }}
-                transition="all 0.15s"
-                cursor="pointer"
-                overflow="hidden"
-              >
-                <Box
-                  w="6px"
-                  flexShrink={0}
-                  background="linear-gradient(180deg, #FDD2F8 0%, #A6D1FF 100%)"
-                />
-                <Card.Body px={4} py={3}>
-                  <Text fontWeight="bold">
-                    {politicalReports[0].orgName}
-                  </Text>
-                  <Text fontSize="sm" color="gray.600">
-                    {politicalReports[0].orgType}
-                  </Text>
-                </Card.Body>
-              </Card.Root>
-            </Link>
-          </Box>
-        )}
-        */}
+        {/* TODO: 政治団体導線を再公開する際に「紐づく政治団体」セクション（orgName/orgType のリンクカード）を復帰する */}
       </Box>
       <Notice />
       <Footer />

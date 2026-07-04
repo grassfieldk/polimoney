@@ -18,7 +18,6 @@ import { BoardContainer } from '@/components/BoardContainer';
 import type { Category } from '@/data/common';
 import type { Profile, Report, Transaction } from '@/models/type';
 import { generateFlowsFromTransactions } from '@/utils/flowGenerator';
-import { BoardChartFixed } from './BoardChartFixed';
 
 type Props = {
   politicianId: string;
@@ -30,7 +29,6 @@ type Props = {
     income: Category[];
     expense: Category[];
   };
-  useFixedBoardChart?: boolean;
   reportPathPrefix?: string;
 };
 
@@ -41,7 +39,6 @@ export function BoardSummary({
   otherReports,
   transactions,
   categories,
-  useFixedBoardChart = false,
   reportPathPrefix,
 }: Props) {
   const [copied, setCopied] = useState(false);
@@ -203,36 +200,8 @@ export function BoardSummary({
           </Box>
         </SimpleGrid>
       </Box>
-      {/* タブ */}
-      {/*<Box mb={5}>*/}
-      {/*  <Tabs.Root*/}
-      {/*    value={selectedTab}*/}
-      {/*    onValueChange={(e) => setSelectedTab(e.value)}*/}
-      {/*  >*/}
-      {/*    <Tabs.List>*/}
-      {/*      <Tabs.Trigger*/}
-      {/*        value="amount"*/}
-      {/*        fontWeight={'bold'}*/}
-      {/*        className={selectedTab === 'amount' ? 'income' : ''}*/}
-      {/*      >*/}
-      {/*        金額(円)*/}
-      {/*      </Tabs.Trigger>*/}
-      {/*      <Tabs.Trigger*/}
-      {/*        value="percentage"*/}
-      {/*        fontWeight={'bold'}*/}
-      {/*        className={selectedTab === 'percentage' ? 'income' : ''}*/}
-      {/*      >*/}
-      {/*        割合(%)*/}
-      {/*      </Tabs.Trigger>*/}
-      {/*    </Tabs.List>*/}
-      {/*  </Tabs.Root>*/}
-      {/*</Box>*/}
       {/* チャート */}
-      {useFixedBoardChart ? (
-        <BoardChartFixed flows={flows} />
-      ) : (
-        <BoardChart flows={flows} />
-      )}
+      <BoardChart flows={flows} />
       <Box
         mb={3}
         display={{ base: 'none', md: 'flex' }}
