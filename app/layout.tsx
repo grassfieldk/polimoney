@@ -67,11 +67,11 @@ export default function RootLayout({
             __html: JSON.stringify(structuredDataOrganization),
           }}
         />
-        <ColorSchemeScript forceColorScheme="light" />
+        <ColorSchemeScript defaultColorScheme="auto" />
       </head>
       <body>
         <NextTopLoader showSpinner={false} />
-        <MantineProvider forceColorScheme="light">
+        <MantineProvider defaultColorScheme="auto">
           <Container size="lg" py="md">
             {children}
           </Container>
