@@ -44,6 +44,7 @@ export type ChartData = {
 };
 
 interface TransactionSectionProps {
+  id?: string;
   title: string;
   transactions: Transaction[];
   badgeColor: 'green' | 'red' | 'blue';
@@ -117,6 +118,7 @@ function ScrollShadowBox({
 }
 
 export function TransactionSection({
+  id,
   title,
   transactions,
   badgeColor,
@@ -194,7 +196,7 @@ export function TransactionSection({
     : { top: 10, right: 10, bottom: 10, left: 10 };
 
   return (
-    <BoardContainer>
+    <BoardContainer id={id}>
       <Title order={2} size="h4" mb="md">
         {title}
       </Title>
