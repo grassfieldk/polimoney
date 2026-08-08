@@ -187,12 +187,14 @@ export function ElectionFinanceContent({
       </BoardContainer>
 
       <TransactionSection
+        id="expense"
         title="支出目的で見る"
         transactions={expenseTransactions}
         badgeColor="red"
       />
 
       <TransactionSection
+        id="income"
         title="収入で見る"
         transactions={incomeTransactions}
         badgeColor="green"
@@ -200,6 +202,7 @@ export function ElectionFinanceContent({
       />
 
       <TransactionSection
+        id="public"
         title="公費で見る"
         transactions={expenseTransactions}
         badgeColor="blue"
