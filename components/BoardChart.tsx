@@ -1,6 +1,6 @@
 'use client';
 
-import { Box } from '@mantine/core';
+import { Box, useComputedColorScheme } from '@mantine/core';
 import {
   ResponsiveSankey,
   type SankeyLayerId,
@@ -27,6 +27,7 @@ type DataLink = {
 };
 
 export function BoardChart({ flows }: Props) {
+  const colorScheme = useComputedColorScheme('light');
   const data: Data = {
     nodes: flows.map((item) => ({
       id: item.name,
@@ -64,6 +65,8 @@ export function BoardChart({ flows }: Props) {
             // Mantine の cyan.6 / pink.6 と同じ値（SVG 属性のため hex 直書き）
             node.direction === 'income' ? '#15aabf' : '#e64980'
           }
+          linkOpacity={colorScheme === 'dark' ? 0.55 : 0.25}
+          linkBlendMode={colorScheme === 'dark' ? 'normal' : 'multiply'}
           label={(node) => `${node.id}: ${node.value.toLocaleString()}`}
           margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
           layers={[

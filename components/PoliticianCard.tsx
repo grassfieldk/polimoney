@@ -6,9 +6,10 @@ type Props = {
 };
 
 export function PoliticianCard({ entry }: Props) {
-  const badges = [entry.profile.party, entry.profile.district].filter(
-    (v): v is string => Boolean(v),
-  );
+  const badges = [
+    entry.profile.party && { label: entry.profile.party },
+    entry.profile.district && { label: entry.profile.district, color: 'gray' },
+  ].filter((v): v is { label: string; color?: string } => Boolean(v));
 
   return (
     <LinkCard

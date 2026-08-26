@@ -7,7 +7,7 @@ type Props = {
   title: ReactNode;
   subtitle?: ReactNode;
   overline?: string;
-  badges?: string[];
+  badges?: Array<string | { label: string; color?: string }>;
   image?: { src: string; alt: string };
 };
 
@@ -40,8 +40,12 @@ export function LinkCard({
           {badges && badges.length > 0 && (
             <Group gap="xs" mt={4}>
               {badges.map((badge) => (
-                <Badge key={badge} variant="light">
-                  {badge}
+                <Badge
+                  key={typeof badge === 'string' ? badge : badge.label}
+                  variant="filled"
+                  color={typeof badge === 'string' ? undefined : badge.color}
+                >
+                  {typeof badge === 'string' ? badge : badge.label}
                 </Badge>
               ))}
             </Group>

@@ -2,9 +2,10 @@ import { Avatar, Badge, Group, Stack, Text, Title } from '@mantine/core';
 import type { ProfileList } from '@/models/type';
 
 export function ProfileHeader({ profile }: { profile: ProfileList }) {
-  const badges = [profile.party, profile.district].filter((v): v is string =>
-    Boolean(v),
-  );
+  const badges = [
+    profile.party && { label: profile.party },
+    profile.district && { label: profile.district, color: 'gray' },
+  ].filter((v): v is { label: string; color?: string } => Boolean(v));
 
   return (
     <Group wrap="nowrap">
@@ -19,9 +20,13 @@ export function ProfileHeader({ profile }: { profile: ProfileList }) {
         {badges.length > 0 && (
           <Group gap="xs" mt={4}>
             {badges.map((badge) => (
-              <Badge key={badge} variant="light">
-                {badge}
-              </Badge>
+                <Badge
+                  key={badge.label}
+                  variant="filled"
+                  color={badge.color}
+                >
+                  {badge.label}
+                </Badge>
             ))}
           </Group>
         )}

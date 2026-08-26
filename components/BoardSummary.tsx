@@ -1,8 +1,16 @@
 'use client';
 
-import { Button, Flex, Group, NativeSelect, SimpleGrid } from '@mantine/core';
+import {
+  Button,
+  Box,
+  Flex,
+  Group,
+  NativeSelect,
+  SimpleGrid,
+  Tooltip,
+} from '@mantine/core';
 import html2canvas from 'html2canvas';
-import { CheckIcon, CopyIcon } from 'lucide-react';
+import { CopyIcon } from 'lucide-react';
 import { useState } from 'react';
 import { BoardChart } from '@/components/BoardChart';
 import { BoardContainer } from '@/components/BoardContainer';
@@ -34,6 +42,7 @@ export function BoardSummary({
   reportPathPrefix,
 }: Props) {
   const [copied, setCopied] = useState(false);
+  const [copying, setCopying] = useState(false);
   const flows = categories
     ? generateFlowsFromTransactions(transactions, categories)
     : [];
@@ -45,81 +54,96 @@ export function BoardSummary({
   const sortedReports = [...allReports].sort((a, b) => b.year - a.year);
 
   const handleCopyImage = async () => {
-    const button = document.getElementById('copy-image-btn');
-    if (button) button.style.display = 'none';
-    const element = document.getElementById('summary');
-    if (!element) return;
-    const canvas = await html2canvas(element, { scale: 3 });
-    canvas.toBlob(async (blob) => {
-      if (blob) {
-        try {
-          await navigator.clipboard.write([
-            new window.ClipboardItem({ 'image/png': blob }),
-          ]);
-          setCopied(true);
-          setTimeout(() => setCopied(false), 3000);
-        } catch (_e) {
-          alert('コピーに失敗しました');
-        }
-      }
-      if (button) button.style.display = '';
-    });
+    const element = document.getElementById('summary-content');
+    if (!element || copying) return;
+    const captureWidth = 960;
+    const previousWidth = element.style.width;
+    const previousMinWidth = element.style.minWidth;
+    setCopying(true);
+    element.style.width = `${captureWidth}px`;
+    element.style.minWidth = `${captureWidth}px`;
+
+    try {
+      const canvas = await html2canvas(element, {
+        width: captureWidth,
+        windowWidth: captureWidth,
+        scale: 1,
+      });
+      const blob = await new Promise<Blob | null>((resolve) => {
+        canvas.toBlob(resolve, 'image/png');
+      });
+      if (!blob) throw new Error('画像の生成に失敗しました');
+      await navigator.clipboard.write([
+        new window.ClipboardItem({ 'image/png': blob }),
+      ]);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 3000);
+    } catch (_e) {
+      alert('コピーに失敗しました');
+    } finally {
+      element.style.width = previousWidth;
+      element.style.minWidth = previousMinWidth;
+      setCopying(false);
+    }
   };
 
   return (
     <BoardContainer id="summary">
-      <Flex
-        direction={{ base: 'column', lg: 'row' }}
-        align="center"
-        justify="space-between"
-        gap="md"
-        mb="xl"
-      >
-        <ProfileHeader profile={profile} />
-        <NativeSelect
-          w={300}
-          value={report.id}
-          onChange={(e) => {
-            window.location.href = `${reportPathPrefix}/${e.currentTarget.value}`;
-          }}
-          data={sortedReports.map((r) => ({
-            value: r.id,
-            label: `${r.year}年 ${r.orgName}`,
-          }))}
-        />
-      </Flex>
-
-      <SectionHeading>収支の流れ</SectionHeading>
-      <SimpleGrid cols={{ base: 1, lg: 3 }} mb="md">
-        <StatCard
-          label="収入総額"
-          value={Math.round(report.totalIncome / 10000)}
-          tone="income"
-        />
-        <StatCard
-          label="支出総額"
-          value={Math.round(report.totalExpense / 10000)}
-          tone="expense"
-        />
-        <StatCard
-          label="年間収支"
-          value={Math.round(report.totalBalance / 10000)}
-        />
-      </SimpleGrid>
-
-      <BoardChart flows={flows} />
-
-      <Group justify="flex-end" mt="sm" visibleFrom="md">
-        <Button
-          id="copy-image-btn"
-          variant="default"
-          leftSection={
-            copied ? <CheckIcon size={16} /> : <CopyIcon size={16} />
-          }
-          onClick={handleCopyImage}
+      <Box id="summary-content">
+        <Flex
+          direction={{ base: 'column', lg: 'row' }}
+          align="center"
+          justify="space-between"
+          gap="md"
+          mb="xl"
         >
-          {copied ? 'コピーしました' : '画像としてコピー'}
-        </Button>
+          <ProfileHeader profile={profile} />
+          <NativeSelect
+            w={300}
+            value={report.id}
+            onChange={(e) => {
+              window.location.href = `${reportPathPrefix}/${e.currentTarget.value}`;
+            }}
+            data={sortedReports.map((r) => ({
+              value: r.id,
+              label: `${r.year}年 ${r.orgName}`,
+            }))}
+          />
+        </Flex>
+
+        <SectionHeading>収支の流れ</SectionHeading>
+        <SimpleGrid cols={{ base: 1, lg: 3 }} mb="md">
+          <StatCard
+            label="収入総額"
+            value={Math.round(report.totalIncome / 10000)}
+            tone="income"
+          />
+          <StatCard
+            label="支出総額"
+            value={Math.round(report.totalExpense / 10000)}
+            tone="expense"
+          />
+          <StatCard
+            label="年間収支"
+            value={Math.round(report.totalBalance / 10000)}
+          />
+        </SimpleGrid>
+
+        <BoardChart flows={flows} />
+      </Box>
+
+      <Group justify="flex-end" mt="sm">
+        <Tooltip label="コピーしました" opened={copied} withArrow>
+          <Button
+            id="copy-image-btn"
+            variant="default"
+            leftSection={<CopyIcon size={16} />}
+            onClick={handleCopyImage}
+            disabled={copying}
+          >
+            画像としてコピー
+          </Button>
+        </Tooltip>
       </Group>
     </BoardContainer>
   );
